@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { Pause, Play } from 'lucide-react';
 
-const CassettePlayer = () => {
+const CassettePlayer = ({ position, color }) => {
     const [isPlaying, setIsPlaying] = useState(false);
     const audioRef = useRef(null);
 
@@ -18,11 +18,21 @@ const CassettePlayer = () => {
 
     return (
         <>
-            <button onClick={togglePlayPause}>
-                {isPlaying ? <Pause size={24} /> : <Play size={24} />}
-            </button>
+            <div
+                className="absolute w-48 h-32 rounded-lg transition-colors duration-300"
+                style={{
+                    left: position.x - 25,
+                    top: position.y - 25,
+                    backgroundColor: color,
+                    boxShadow: 'inset 0 0 10px rgba(0,0,0,0.5)'
+                }}
+            >
+                <button onClick={togglePlayPause}>
+                    {isPlaying ? <Pause size={24} /> : <Play size={24} />}
+                </button>
 
-            <audio ref={audioRef} src='./audio/cant_believe_its_true.m4a'/>
+                <audio ref={audioRef} src='./audio/cant_believe_its_true.m4a'/>
+            </div>
         </>
     );
 };
