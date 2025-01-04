@@ -22,7 +22,7 @@ const CassettePlayer = () => {
                 {isPlaying ? <Pause size={24} /> : <Play size={24} />}
             </button>
 
-            <audio ref={audioRef} src='src/assets/audio/cant_believe_its_true.m4a'/>
+            <audio ref={audioRef} src='./audio/cant_believe_its_true.m4a'/>
         </>
     );
 };
