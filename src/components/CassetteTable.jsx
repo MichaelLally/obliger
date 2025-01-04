@@ -3,9 +3,9 @@ import CassettePlayer from './CassettePlayer'
 
 const CassetteTable = () => {
     const [cassettes, setCassettes] = useState([
-      { id: 1, color: '#FF6B6B', position: { x: -200, y: 250 }, locked: false },
-      { id: 2, color: '#4ECDC4', position: { x: 0, y: 250 }, locked: false },
-      { id: 3, color: '#45B7D1', position: { x: 200, y: 250 }, locked: false },
+      { id: 1, color: '#FF6B6B', position: { x: -200, y: 250 }, srcAudio: './audio/cant_believe_its_true.m4a', locked: false },
+      { id: 2, color: '#4ECDC4', position: { x: 0, y: 250 }, srcAudio: './audio/tv_static.mp3', locked: false },
+      { id: 3, color: '#45B7D1', position: { x: 200, y: 250 }, srcAudio: './audio/tv_static.mp3', locked: false },
     ]);
   
     const [player] = useState({
@@ -13,6 +13,7 @@ const CassetteTable = () => {
     });
   
     const [playerColor, setPlayerColor] = useState('#2C3E50');
+    const [playerAudio, setPlayerAudio] = useState(null);
     const [draggedCassette, setDraggedCassette] = useState(null);
     const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   
@@ -68,6 +69,7 @@ const CassetteTable = () => {
                 return b;
               }));
               setPlayerColor(cassette.color);
+              setPlayerAudio(cassette.srcAudio);
             }
           }
           setDraggedCassette(null);
@@ -88,6 +90,7 @@ const CassetteTable = () => {
       
       if (cassette.locked) {
         setPlayerColor('#2C3E50');
+        setPlayerAudio(null);
       }
       
       setDragOffset({
@@ -101,7 +104,7 @@ const CassetteTable = () => {
   
     return (
         <div className="relative w-full h-96 select-none">
-            <CassettePlayer position={player.position} color={playerColor} />
+            <CassettePlayer position={player.position} color={playerColor} srcAudio={playerAudio} />
             
             {cassettes.map(cassette => (
             <div
