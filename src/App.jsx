@@ -1,4 +1,4 @@
-import CassettePlayer from './components/CassettePlayer'
+import CassetteTable from './components/CassetteTable'
 import './App.css'
 
 function App() {
@@ -6,7 +6,7 @@ function App() {
   return (
     <>
       <h1>Obliger</h1>
-      <CassettePlayer />
+      <CassetteTable />
     </>
   )
 }
