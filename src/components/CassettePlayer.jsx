@@ -6,7 +6,6 @@ const CassettePlayer = ({ position, color, srcAudio }) => {
     const audioRef = useRef(null);
 
     useEffect(() => {
-        // Process param1 changes
         setIsPlaying(false);
         if (audioRef.current) {
             audioRef.current.pause();
