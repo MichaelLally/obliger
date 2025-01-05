@@ -17,6 +17,21 @@ const CassetteTable = () => {
     const [draggedCassette, setDraggedCassette] = useState(null);
     const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   
+    const ejectCassette = () => {
+      setCassettes(prevCassettes => prevCassettes.map(cassette => {
+        if (cassette.locked === true) {
+          return {
+            ...cassette,
+            position: { x: (cassette.id - 1) * 100 + 50, y: 50 },  // release position
+            locked: false
+          };
+        }
+        return cassette;
+      }));
+      setPlayerAudio(null);
+      setPlayerColor('#2C3E50');
+    }
+
     useEffect(() => {
       if (draggedCassette !== null) {
         
@@ -104,7 +119,7 @@ const CassetteTable = () => {
   
     return (
         <div className="relative w-full h-96 select-none">
-            <CassettePlayer position={player.position} color={playerColor} srcAudio={playerAudio} />
+            <CassettePlayer position={player.position} color={playerColor} srcAudio={playerAudio} ejectCassette={ejectCassette} />
             
             {cassettes.map(cassette => (
             <div
