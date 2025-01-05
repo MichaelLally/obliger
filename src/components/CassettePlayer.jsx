@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { Pause, Play, FastForward, Rewind, ArrowDownFromLine } from 'lucide-react';
 
 const SCRUB_MULTIPLIER = 4; // Adjust this to change speed
@@ -10,15 +10,67 @@ const CassettePlayer = ({ position, color, srcAudio, ejectCassette }) => {
     const audioRef = useRef(null);
     const scrubIntervalRef = useRef(null);
     const scrubStartTimeRef = useRef(null);
+    
+    const sounds = useMemo(() => ({
+        button_press: new Audio('./audio/button_press.mp3'),
+        cassette_insert: new Audio('./audio/cassette_insert.mp3'),
+        cassette_eject: new Audio('./audio/cassette_eject.mp3'),
+        cassette_player_motor: new Audio('./audio/cassette_player_motor.mp3')
+    }), []);
+
+    const sound_buttonPress = () => {
+        const sound = sounds['button_press'];
+        if (sound) {
+            sound.currentTime = 0;
+            sound.play().catch(err => console.log('Sound play failed:', err));
+        }
+    }
+
+    const sound_cassetteInsert = () => {
+        const sound = sounds['cassette_insert'];
+        if (sound) {
+            sound.currentTime = 0;
+            sound.play().catch(err => console.log('Sound play failed:', err));
+        }
+    }
+
+    const sound_cassetteEject = () => {
+        const sound = sounds['cassette_eject'];
+        if (sound) {
+            sound.currentTime = 0;
+            sound.play().catch(err => console.log('Sound play failed:', err));
+        }
+    }
+
+    const sound_startMotor = () => {
+        const sound = sounds['cassette_player_motor'];
+        if (sound) {
+            sound.currentTime = 0;
+            sound.play().catch(err => console.log('Sound play failed:', err));
+        }
+    }
+
+    const sound_stopMotor = () => {
+        const sound = sounds['cassette_player_motor'];
+        if (sound) {
+            sound.pause();
+        }
+    }
 
     useEffect(() => {
         setIsPlaying(false);
         if (audioRef.current) {
             audioRef.current.pause();
         }
+        if (srcAudio) {
+            sound_cassetteInsert();
+        } else {
+            sound_cassetteEject();
+        }
     }, [srcAudio]);
 
     const pressPlay = () => {
+        sound_buttonPress();
         if (audioRef.current && srcAudio) {
             audioRef.current.play();
             setIsPlaying(true);
@@ -26,6 +78,7 @@ const CassettePlayer = ({ position, color, srcAudio, ejectCassette }) => {
     }
 
     const pressPause = () => {
+        sound_buttonPress();
         if (audioRef.current && srcAudio) {
             audioRef.current.pause();
             setIsPlaying(false);
@@ -33,6 +86,8 @@ const CassettePlayer = ({ position, color, srcAudio, ejectCassette }) => {
     }
 
     const startScrub = (ff_or_rwd) => {
+        sound_buttonPress();
+        sound_startMotor();
         if (audioRef.current && srcAudio) {
             // Store when we started holding the button
             audioRef.current.pause();
@@ -51,6 +106,7 @@ const CassettePlayer = ({ position, color, srcAudio, ejectCassette }) => {
     };
 
     const stopScrub = () => {
+        sound_stopMotor();
         if (scrubIntervalRef.current) {
             if (isPlaying && audioRef.current && srcAudio) {
                 audioRef.current.play();
@@ -62,6 +118,7 @@ const CassettePlayer = ({ position, color, srcAudio, ejectCassette }) => {
     };
 
     const pressEject = () => {
+        sound_buttonPress();
         ejectCassette();
     };
 
